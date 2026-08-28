@@ -1,0 +1,9 @@
+﻿Quantity,XFOIL,Corrected,Reference,Difference,Source
+"Lift slope, α = 0–8°",0.110804412,n/a,0.10966 /deg,1.0%,"Thin aerofoil theory, 2π/rad"
+Cl at α = 10°,1.1222,1.135041867,1.0935,3.8%,"NASA TMR SA, 7-code mean"
+Cl at α = 15°,1.5942,1.612443188,1.5518,3.9%,"NASA TMR SA, 7-code mean"
+Cd at α = 0°,0.00507,n/a,0.00817,-37.9%,"NASA TMR SA, 7-code mean"
+Cd at α = 10°,0.00977,n/a,0.01236,-21.0%,"NASA TMR SA, 7-code mean"
+Cd at α = 15°,0.01621,n/a,0.02127,-23.8%,"NASA TMR SA, 7-code mean"
+,,,,,
+XFOIL runs free transition; the NASA SA reference is fully turbulent. Lift is higher and drag lower as a result.,,,,,
