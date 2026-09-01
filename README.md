@@ -1,5 +1,7 @@
 # NACA 0012 CFD Validation Study
 
+Note: Full write-up in progress. Phase 0 complete; Phase 1 (OpenFOAM RANS) currently in setup.
+
 A 2D aerodynamic study of the NACA 0012 aerofoil, built validation-first: every result is
 benchmarked against an independent method or published data before the method is extended to
 new geometry.
