@@ -1,0 +1,34 @@
+Case Setup
+
+OpenFOAM v2606 case for the NACA 0012 validation study. Currently set up for the coarsest NASA grid (113 x 33, 3584 cells) at alpha=0 degrees.
+
+The mesh is regenerated from NASA Turbulence Modeling Resource grid files (available from https://tmbwg.github.io/turbmodels/naca0012_grids.html) and is not committed to this repository. I used NASA's grids rather than building my own for a more controlled comparison, to remove mesh quality as a variable of why results may differ, and since the NASA grids are purpose built for a mesh independence study.
+
+Regenerating the mesh
+
+From the case directory, with the grid file present:
+
+plot3dToFoam -noBlank n0012_113-33.p3dfmt
+
+autoPatch 45 -overwrite
+
+createPatch -overwrite
+
+checkMesh
+
+Notes: -noBlank is required since the NASA PLOT3D files have no IBLANK array, and without it the reader runs off the end of the file. 
+
+OpenFOAM has no 2D solver, so a 2D case is a one cell thick mesh with 'empty' boundary conditions on the two spanwise faces. The 3D NASA files are two identical planes separated by a unit distance. This is exactly the one cell thick mesh OpenFOAM requires; the 2D files would only give a surface without volume.
+
+Patch numbering was verified by extracting each patch with 'surfaceMeshExtract' and checking coordinates. I did this because autopatch assigns names 'auto0' to 'auto4' in order of discovery, which may differ depending on the grid. On this 113 x 33 grid the mapping is:
+
+autoPatch name	   Patch	        Faces
+
+auto3	           aerofoil	        64
+
+auto4	           farfield	        112
+
+auto0	           outlet	        64
+
+auto1, auto2	   frontAndBack	        3584 each (7168 total)
+
