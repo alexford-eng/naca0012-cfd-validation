@@ -32,3 +32,25 @@ auto0	           outlet	        64
 
 auto1, auto2	   frontAndBack	        3584 each (7168 total)
 
+Case Configuration
+
+Setting			                 Value		      	           Notes
+Solver		                   simpleFoam		               Steady-state, incompressible
+Turbulence model	           Spalart-Allmaras	           Matches the NASA reference cases
+Reynolds number		           6 x 10^6		                 Set via nu = 1.6667e-07 with U = 1, c = 1
+Freestream velocity	         (1 0 0)			               Aerofoil lies in the x-z plane; y is spanwise
+nuTilda freestream	         5.0001e-07		               3 x nu, as specified by the NASA case
+Wall treatment		           nutLowReWall                Function	Wall-resolved; no wall functions
+Convection scheme	           Second-order linearUpwind	
+Non-orthogonal correctors    2				                    Mesh has 166 faces above 70 degrees
+
+The angle of attack is altered by rotating the freestream velocity vector, and the 'liftDir' and 'dragDir' entries in system/ControlDir must be rotated ot match.
+
+alpha		 internalField (U)		    dragDir			          liftDir
+0		     (1 0 0)			            (1 0 0)		           	(0 0 1)
+10		   (0.984808 0 0.173648)		(0.984808 0 0.173648)	(-0.173648 0 0.984808)
+15		   (0.965926 0 0.258819)		(0.965926 0 0.258819)	(-0.258819 0 0.965926)
+
+Running
+cp -r 0.orig 0
+simpleFoam | tee log.simpleFoam
