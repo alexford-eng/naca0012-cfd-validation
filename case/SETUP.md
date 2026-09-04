@@ -1,13 +1,14 @@
-Case Setup
+# Case Setup
 
 OpenFOAM v2606 case for the NACA 0012 validation study. Currently set up for the coarsest NASA grid (113 x 33, 3584 cells) at alpha=0 degrees.
 
 The mesh is regenerated from NASA Turbulence Modeling Resource grid files (available from https://tmbwg.github.io/turbmodels/naca0012_grids.html) and is not committed to this repository. I used NASA's grids rather than building my own for a more controlled comparison, to remove mesh quality as a variable of why results may differ, and since the NASA grids are purpose built for a mesh independence study.
 
-Regenerating the mesh
+## Regenerating the mesh
 
 From the case directory, with the grid file present:
 
+```
 plot3dToFoam -noBlank n0012_113-33.p3dfmt
 
 autoPatch 45 -overwrite
@@ -15,6 +16,7 @@ autoPatch 45 -overwrite
 createPatch -overwrite
 
 checkMesh
+```
 
 Notes: -noBlank is required since the NASA PLOT3D files have no IBLANK array, and without it the reader runs off the end of the file. 
 
@@ -22,35 +24,35 @@ OpenFOAM has no 2D solver, so a 2D case is a one cell thick mesh with 'empty' bo
 
 Patch numbering was verified by extracting each patch with 'surfaceMeshExtract' and checking coordinates. I did this because autopatch assigns names 'auto0' to 'auto4' in order of discovery, which may differ depending on the grid. On this 113 x 33 grid the mapping is:
 
-autoPatch name	   Patch	        Faces
+| autoPatch name | Patch | Faces |
+| --- | --- | --- |
+| auto3 | aerofoil | 64 |
+| auto4	| farfield | 112 |
+| auto0 |	outlet | 64 |
+| auto1, auto2 | frontAndBack | 3584 each (7168 total) |
 
-auto3	           aerofoil	        64
+## Case Configuration
 
-auto4	           farfield	        112
-
-auto0	           outlet	        64
-
-auto1, auto2	   frontAndBack	        3584 each (7168 total)
-
-Case Configuration
-
-Setting			                 Value		      	           Notes
-Solver		                   simpleFoam		               Steady-state, incompressible
-Turbulence model	           Spalart-Allmaras	           Matches the NASA reference cases
-Reynolds number		           6 x 10^6		                 Set via nu = 1.6667e-07 with U = 1, c = 1
-Freestream velocity	         (1 0 0)			               Aerofoil lies in the x-z plane; y is spanwise
-nuTilda freestream	         5.0001e-07		               3 x nu, as specified by the NASA case
-Wall treatment		           nutLowReWallFunction	       Wall-resolved; no wall functions
-Convection scheme	           Second-order linearUpwind	
-Non-orthogonal correctors    2				                    Mesh has 166 faces above 70 degrees
+|Setting			                 |Value		      	           |Notes|
+|---|---|---|
+|Solver		  |                 simpleFoam		             |  Steady-state, incompressible|
+|Turbulence model	        |   Spalart-Allmaras	       |    Matches the NASA reference cases|
+|Reynolds number		          | 6 x 10^6		               |  Set via nu = 1.6667e-07 with U = 1, c = 1
+|Freestream velocity	       |  (1 0 0)			            |   Aerofoil lies in the x-z plane; y is spanwise
+|nuTilda freestream	        | 5.0001e-07		              | 3 x nu, as specified by the NASA case
+|Wall treatment		          | nutLowReWallFunction	     |  Wall-resolved; no wall functions
+|Convection scheme	          | Second-order linearUpwind	|
+|Non-orthogonal correctors   | 2				                    |Mesh has 166 faces above 70 degrees
 
 The angle of attack is altered by rotating the freestream velocity vector, and the 'liftDir' and 'dragDir' entries in system/controlDict must be rotated to match.
 
-alpha		 internalField (U)		    dragDir			          liftDir
-0		     (1 0 0)			            (1 0 0)		           	(0 0 1)
-10		   (0.984808 0 0.173648)		(0.984808 0 0.173648)	(-0.173648 0 0.984808)
-15		   (0.965926 0 0.258819)		(0.965926 0 0.258819)	(-0.258819 0 0.965926)
+|alpha		| internalField (U)		|    dragDir			      |    liftDir|
+|---|---|---|---|
+|0		   |  (1 0 0)			     |       (1 0 0)		   |        	(0 0 1)|
+|10		 |  (0.984808 0 0.173648)	|	(0.984808 0 0.173648)|	(-0.173648 0 0.984808)|
+|15		|   (0.965926 0 0.258819)		|(0.965926 0 0.258819)	|(-0.258819 0 0.965926)|
 
-Running
+## Running
+```
 cp -r 0.orig 0
 simpleFoam | tee log.simpleFoam
