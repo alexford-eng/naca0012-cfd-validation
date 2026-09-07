@@ -2,37 +2,31 @@
 
 Note: Full write-up in progress. Phase 0 complete; Phase 1 (OpenFOAM RANS) currently in progress.
 
-A 2D aerodynamic study of the NACA 0012 aerofoil, built validation-first: every result is
-benchmarked against an independent method or published data before the method is extended to
-new geometry.
+This project has been independently carried out by a second year Mechanical Engineering student studying at the University of Bath and is a validation study of 2D RANS CFD for the NACA 0012 aerofoil benchmarked against NASA Turbulence Modelling Resource data from seven independent CFD codes.
 
-**Author:** Alex Ford — MEng Mechanical Engineering, University of Bath
-**Status:** In progress. Phase 0 complete.
+---
+
+## Status of project phases
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 0 | Reference baselines — XFOIL panel method, analytical theory, published experimental data | Complete |
+| 1 | 2D RANS CFD of NACA 0012 in OpenFOAM, with mesh independence and convergence study | Complete |
+| 1.5| Mesh independence study at different angles (alpha = 10, 15 degrees) | In progress |
+| 2 | Inverted wing in ground effect — downforce and drag across ride heights | Not started |
+| 3 | Multi-element wing, gap and overlap sweep | Stretch goal |
 
 ---
 
 ## Why validation-first
 
-CFD always returns an answer. It does not warn you when the mesh is too coarse, the domain too
-small, or the turbulence model inappropriate — it returns plausible-looking numbers regardless.
-The value of a simulation therefore lies not in producing a result but in demonstrating that the
-result is trustworthy.
-
-This project is structured around that principle. The starting geometry is deliberately
-unglamorous: the NACA 0012 is the most extensively measured aerofoil in existence, so a correct
-answer is known in advance. Only once the method reproduces that known answer is it applied to
-geometry where no reference data exists.
+Since CFD returns an answer regardless of whether the setup is correct, a validation first approach was taken. Confirming that acquired results are trustworthy is much more meaningful than simply producing results, hence the importance of comparison to known data (which is why the NACA 0012 was chosen specifically). Only after reproducing an accepted finding should the method be applied elsewhere.
 
 ---
 
-## Project phases
+## Headline Results
 
-| Phase | Description | Status |
-|-------|-------------|--------|
-| 0 | Reference baselines — XFOIL panel method, analytical theory, published experimental data | Complete |
-| 1 | 2D RANS CFD of NACA 0012 in OpenFOAM, with mesh independence and convergence study | Not started |
-| 2 | Inverted wing in ground effect — downforce and drag across ride heights | Not started |
-| 3 | Multi-element wing, gap and overlap sweep | Stretch goal |
+The XFOIL lift slope was found to be within 1.0% of thin aerofoil theory.                                The mesh independence study was done across 4 refinement levels from 3,584 cells to 229,376 cells.          Drag error reduced from +98% to +3.9% from the least to most refined mesh, with the two finest grids being only 0.3% different.                                                                                      Surface pressure distribution matches CFL3D reference almost exactly, and skin friction matches in shape with a minor discrepancy at the leading-edge. 
 
 ---
 
