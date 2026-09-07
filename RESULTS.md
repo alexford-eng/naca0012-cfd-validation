@@ -75,3 +75,24 @@ NASA used standard Spalart-Allmaras with ft2 active, while OpenFOAM defaults to 
 
 ## Section 3: Mesh Independence
 
+### at alpha = 0 degrees
+
+|Grid	|Cells|	Cd	|vs NASA	|y+ avg	|Max non-orth|
+|---|---|---|---|---|---|
+|113×33	|3,584	|0.016176	|+98.0%	|1.648	|85.7°|
+|225×65	|14,336	|0.009644	|+18.0%	|0.517	|77.4°|
+|449×129	|57,344	|0.008459	|+3.5%	|0.213	|52.4°|
+|897×257	|229,376	|0.008487*	|+3.9%	|0.099	|19.8°|
+
+The order of convergence was found to be 2.46, observed from grids 1-3. Error reduced 5.43x, then 5.09x (similar factors across 2 independent refinements).
+Mesh quality consistently improved, with the maximum non-orthogonality decreasing from 85.7 degrees for the coarsest grid to 19.8 degrees for the most refined one. The amount of severely non-orthogonal faces also decreased from 166 to 0 as the grid became more refined.
+the y+ value was below 1 from the second grid onward, reaching a 0.099 average on the finest, and being wall-resolved throughout. 
+Grids 3 and 4 agree to 0.3%, and the solution is mesh independent.
+
+## Section 4: The limit cycle
+
+*897x257 developed a numerical limit cycle with a period of ~3500 iterations between 8500-12000. Cl was oscillating by +-0.0035 around a mean of -1.6 x 10^-5. The stated value is a period-averaged mean, not a converged value. Cd oscillated over only +-0.20%. This only happened on the finest grid because more coarse meshes carry numerical dissipation which damps weakly unstable modes (refining removes artificial damping). The progression can be seen across all 4 grids: the coarsest grid oscillated betweem 2 values, the 440x120 grid drifted monotonically, and the finest grid limit-cycled. The amount of iterations required for the values to settle also scales with refinement, with the coarsest grid requiring only a few hundred iterations to converge, whereas the finest grid did not reach a fixed point even after 12000 iterations.
+
+I attempted to use Richardson extrapolation, which predicted a grid-independent Cd of 0.008197 (+0.33% compared to NASA) on grids 1-3, but grid 4 (the finest grid) did not confirm this, and the change between grid 3 and 4 reversed the sign, meaning convergence is not monotonic across all four points and the extrapolation is invalid, so this was retracted.
+
+## Section 5: Surface comparisons 
