@@ -61,3 +61,17 @@ in my results is higher.
 This explanation is supported by the fact the drag discrepancy between mine and NASA's results decreased as
 alpha rose and the laminar section of the aerofoil got smaller (went from 37.9% to 20.9% & 23.8%).
 
+## Section 2: Phase 1 setup
+
+I used NASA's grids instead of self-generated ones to remove mesh quality as a possible variable that may affect results, so a better comparison on identical cells could be attained, and because NASA's grids are purpose built for grid convergence. Although mesh generation is not a skill demonstrated in this phase, since there is no published grid to be used in phase 2, it will be used then.
+
+OpenFOAM was used as the solver, with a steady-state incomopressible flow. I used Re = 6 x 10^6 with ν = 1.6667 x 10^-7, U = 1 and c = 1.
+
+Spalart-Allmaras was used as the turbulence model, with nuTilda_∞ = 3ν to match NASA's stated value. The simulation was also wall-resolved with no wall functions ( `nutLowReWallFunction`).
+
+Model verification was performed, with all Spalart-Allmaras constants being checked against TMR specification and confirmed identical (sigmaNut 0.66666, kappa 0.41, Cb1 0.1355, Cb2 0.622, Cw2 0.3, Cw3 2, Cv1 7.1).
+
+NASA used standard Spalart-Allmaras with ft2 active, while OpenFOAM defaults to SA-noft2 (`ft2 false`). TMR states these should give very similar results when the freestream turbulence variable is large enough to override ft2, which it is at 3ν.
+
+## Section 3: Mesh Independence
+
