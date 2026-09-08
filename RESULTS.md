@@ -109,9 +109,12 @@ The Cp results showed upper and lower surfaces coinciding, due to the aerofoil's
 The Cf results showed the shape, peak location (at x/c ≈ 0.03) and decay all matching. The only two differences were a ~2% gap in the peak's magnitude, and a small divergence at x/c > 0.98 (where CFL3D's own file header documents high error).
 
 <img width="1062" height="703" alt="cf_comparison_alpha0_FIXED" src="https://github.com/user-attachments/assets/96683e1a-8418-408a-a56b-8b7df004899d" />
-
+Cf comparison between data from my model and CFL3D data at alpha = 0 (with fixed sign convention)
+                                                                                                        
+                                                                                                         
 <img width="1054" height="703" alt="cp_comparison_alpha0" src="https://github.com/user-attachments/assets/91dc623c-2303-4919-bf2a-db3a0e41ec68" />
-
+Cp comparison between data from my model and CFL3D data at alpha = 0
+                                                                                                   
 ## Section 6: The residual difference
 
 Magnitude: +3.6% against CFL3D, +3.9% against the seven-code mean.
