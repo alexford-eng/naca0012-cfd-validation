@@ -109,11 +109,11 @@ The Cp results showed upper and lower surfaces coinciding, due to the aerofoil's
 The Cf results showed the shape, peak location (at x/c ≈ 0.03) and decay all matching. The only two differences were a ~2% gap in the peak's magnitude, and a small divergence at x/c > 0.98 (where CFL3D's own file header documents high error).
 
 <img width="1062" height="703" alt="cf_comparison_alpha0_FIXED" src="https://github.com/user-attachments/assets/96683e1a-8418-408a-a56b-8b7df004899d" />
-Cf comparison between data from my model and CFL3D data at alpha = 0 (with fixed sign convention)
+*Cf comparison between data from my model and CFL3D data at alpha = 0 (with fixed sign convention)*
                                                                                                         
                                                                                                          
 <img width="1054" height="703" alt="cp_comparison_alpha0" src="https://github.com/user-attachments/assets/91dc623c-2303-4919-bf2a-db3a0e41ec68" />
-Cp comparison between data from my model and CFL3D data at alpha = 0
+*Cp comparison between data from my model and CFL3D data at alpha = 0*
                                                                                                    
 ## Section 6: The residual difference
 
@@ -132,5 +132,45 @@ Modelled using incompressible flow, instead of M = 0.15 which was the reference.
 
 The finest grid didn't fully converge, and period-averaged values were reported.
 
+## Section 8: Angle Sweep (alpha = 10, 15 degrees)
+
+### Method
+
+Both angles used the 449x129 grid, since it was shown to be mesh-independent within 0.3% of the finest grid at alpha = 0 degrees but did not have the limit cycle behaviour that the 897x257 grid had. The angle of attack was set by rotating the freestream velocity vector (didn't rotate the mesh to avoid needing to remesh for each angle).
+
+| alpha | internalField (U) | liftDir | dragDir |
+|---|---|---|---|
+| 10 | (0.984808 0 0.173648) | (-0.173648 0 0.984808) | (0.984808 0 0.173648) |
+| 15 | (0.965926 0 0.258819) | (-0.258819 0 0.965926) | (0.965926 0 0.258819) |
+
+### Setup error identified and fixed
+
+Initially, my attempt at alpha = 10 degrees produced Cl which went from +16 to -9.6 before settling near zero, which is physically impossible. I believed this occured because editing `internalField` in O/U directly doesn't update `boundaryField`/`farfield`/`freestreamValue`, even though 0.orig/U defines it as `$internalField`. `foamDictionary` -set resolves this macro to a value on write rather than preserving the reference. The farfield boundary was still enforcing the alpha = 0 degrees freestream while the interior was set to alpha = 10 degrees.
+
+This was fixed by editting 0.orig and setting `freestreamValue` on both farfield and outlet patches to the same vector as `internalField`, then regenerating 0/ from 0.orig.
+
+### Results
+
+| alpha | Cl (yours) | Cl (NASA) | Cl diff | Cd (yours) | Cd (NASA) | Cd diff |
+|---|---|---|---|---|---|---|
+| 0 | 0.0000 | 0.0000 | -- | 0.008459 | 0.00817 | +3.5% |
+| 10 | 1.08286 | 1.0935 | -0.97% | 0.011888 | 0.01236 | -3.82% |
+| 15 | 1.56116 | 1.5518 | +0.60% | 0.020292 | 0.021237 | -4.45% |
+
+Both runs converged, with alpha = 10 degrees settling to a stable value with negligible change between iterations. Alpha = 15 degrees showed a small, continuous 2 iteration cycle (Cl, amplitude of 0.002%).
+
+### Discussion
+
+Lift matches NASA to under 1% at both angles, matching the precision level that the seven reference codes achieved amongst themself. Drag is still 3.5-4.5% off across the angles, consistent with the alpha = 0 residual discussed in Section 6, and remains localised to the leading-edge resolution.
+
+## Section 9: Flow field visualisation (alpha = 0 degrees)
+
+![Velocity magnitude](figures/velocity_alpha0.png)
+*Velocity magnitude, alpha = 0, 449x129 grid. Stagnation at the leading edge,
+acceleration over both surfaces, wake development downstream of the trailing edge.*
+
+![Pressure field](figures/pressure_alpha0.png)
+*Kinematic pressure field, alpha = 0. Suction peak visible on the upper surface near
+the leading edge, consistent with the Cp distribution in Section 5.*
 NASA's grids contain a documented ~10^-8 non-closure at the tailing edge due to a typo in the aerofoil equation.
 
