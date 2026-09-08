@@ -81,8 +81,12 @@ NASA used standard Spalart-Allmaras with ft2 active, while OpenFOAM defaults to 
 |---|---|---|---|---|---|
 |113×33	|3,584	|0.016176	|+98.0%	|1.648	|85.7°|
 |225×65	|14,336	|0.009644	|+18.0%	|0.517	|77.4°|
-|440×129	|57,344	|0.008459	|+3.5%	|0.213	|52.4°|
+|440×129	|57,344	|0.008459	|+3.5%	|0.213	|52.4°| 
 |897×257	|229,376	|0.008487*	|+3.9%	|0.099	|19.8°|
+
+*(Continued in section 4)
+
+NASA's reference reference Cd: 0.00817 for the seven-code mean, 0.0081925for CFL3D
 
 The order of convergence was found to be 2.46, observed from grids 1-3. Error reduced 5.43x, then 5.09x (similar factors across 2 independent refinements).
 Mesh quality consistently improved, with the maximum non-orthogonality decreasing from 85.7 degrees for the coarsest grid to 19.8 degrees for the most refined one. The amount of severely non-orthogonal faces also decreased from 166 to 0 as the grid became more refined.
@@ -97,16 +101,16 @@ I attempted to use Richardson extrapolation, which predicted a grid-independent 
 
 ## Section 5: Surface comparisons 
 
+The surface comparisons were all completed on the 449x129 grid, since that one had no limit cycle.
 Used the `wallShearStress` function object and `surfaces` sampling on the aerofoil patch, got 256 face-centre values at the spanwise midplane and did no interpolation. 
-Non-dimensionalisation: Cp = 2p
-                        Cf = -2tau_x (magUInf=1)
+Non-dimensionalisation: Cp = 2p, Cf = -2tau_x (magUInf=1).
 The OpenFOAM wall shear stress sign convention is opposite to CFL3D's, which was discovered by observing that the obtained curves were exact mirror images through zero.
 The Cp results showed upper and lower surfaces coinciding, due to the aerofoil's symmetry, and both track CFL3D almost exactly from stagnation (Cp ≈ 1.0) to the suction peak (Cp ≈ -0.4 at x/c ≈ 0.1), until the trailing edge with no systematic error.
 The Cf results showed the shape, peak location (at x/c ≈ 0.03) and decay all matching. The only two differences were a ~2% gap in the peak's magnitude, and a small divergence at x/c > 0.98 (where CFL3D's own file header documents high error).
 
 <img width="1062" height="703" alt="cf_comparison_alpha0_FIXED" src="https://github.com/user-attachments/assets/96683e1a-8418-408a-a56b-8b7df004899d" />
 
-<img width="1062" height="703" alt="cf_comparison_alpha0_FIXED" src="https://github.com/user-attachments/assets/90858ab1-d700-43a3-bbce-e4b7efd269e2" />
+<img width="1054" height="703" alt="cp_comparison_alpha0" src="https://github.com/user-attachments/assets/91dc623c-2303-4919-bf2a-db3a0e41ec68" />
 
 ## Section 6: The residual difference
 
