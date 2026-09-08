@@ -9,8 +9,8 @@ This project has been independently carried out by a second year Mechanical Engi
 | Phase | Description | Status |
 |-------|-------------|--------|
 | 0 | Reference baselines — XFOIL panel method, analytical theory, published experimental data | Complete |
-| 1 | 2D RANS CFD of NACA 0012 in OpenFOAM, with mesh independence and convergence study | Complete |
-| 1.5| Angle sweep at alpha = 10 degrees and 15° on the validated grid | Complete |
+| 1 | 2D RANS CFD of NACA 0012 in OpenFOAM, with mesh independence and convergence study ; Angle sweep at alpha = 10 degrees and 15° on the validated grid | Complete |
+
 
 ---
 
