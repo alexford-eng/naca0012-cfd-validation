@@ -52,6 +52,11 @@ The angle of attack is altered by rotating the freestream velocity vector, and t
 |10		 |  (0.984808 0 0.173648)	|	(0.984808 0 0.173648)|	(-0.173648 0 0.984808)|
 |15		|   (0.965926 0 0.258819)		|(0.965926 0 0.258819)	|(-0.258819 0 0.965926)|
 
+## Notes
+
+The `wallShearStress` extraction requires the solver, not `postProcess` because the turbulence model has to be in the database; restart from `latestTime` with a short `endTime` and matching `writeInterval`.
+Patch auto-numbering stayed constant (e.g. auto3 = aerofoil) across all grids, and was verified on each grid.
+
 ## Running
 ```
 cp -r 0.orig 0
