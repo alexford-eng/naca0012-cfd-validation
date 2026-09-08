@@ -1,7 +1,5 @@
 # NACA 0012 CFD Validation Study
 
-Note: Full write-up in progress. Phase 0 complete; Phase 1 (OpenFOAM RANS) currently complete.
-
 This project has been independently carried out by a second year Mechanical Engineering student studying at the University of Bath and is a validation study of 2D RANS CFD for the NACA 0012 aerofoil benchmarked against NASA Turbulence Modelling Resource data from seven independent CFD codes.
 
 ---
@@ -12,9 +10,7 @@ This project has been independently carried out by a second year Mechanical Engi
 |-------|-------------|--------|
 | 0 | Reference baselines — XFOIL panel method, analytical theory, published experimental data | Complete |
 | 1 | 2D RANS CFD of NACA 0012 in OpenFOAM, with mesh independence and convergence study | Complete |
-| 1.5| Angle sweep at alpha = 10 degrees and 15° on the validated grid | In progress |
-| 2 | Inverted wing in ground effect — downforce and drag across ride heights | Not started |
-| 3 | Multi-element wing, gap and overlap sweep | Stretch goal |
+| 1.5| Angle sweep at alpha = 10 degrees and 15° on the validated grid | Complete |
 
 ---
 
